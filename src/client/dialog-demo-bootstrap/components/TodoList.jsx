@@ -71,7 +71,6 @@ function TodoList () {
   return (
     <div className='todo-list'>
       <DefaultListGroup
-        key='DefaultListGroup'
         tasks={tasks}
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}

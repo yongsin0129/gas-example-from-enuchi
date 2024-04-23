@@ -5,11 +5,10 @@ import TodoItem from './TodoItem'
 
 function DefaultListGroup ({ tasks, deleteTask, toggleCompleted }) {
   return (
-    <ListGroup key='ListGroup'>
+    <ListGroup>
       {tasks.map(task => (
-        <ListGroup.Item>
+        <ListGroup.Item key={task.id}>
           <TodoItem
-            key={task.id}
             task={task}
             deleteTask={deleteTask}
             toggleCompleted={toggleCompleted}

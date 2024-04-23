@@ -15,6 +15,7 @@ export function getAllTasks () {
     result.push(obj)
   })
 
+  Logger.log('getAllTasks result : ' + JSON.stringify(result))
   return result
 }
 
@@ -25,8 +26,8 @@ export function updateTask (taskId, completed) {
   // 更新任務的完成狀態
   sheet.getRange(taskRow, 3).setValue(completed ? 'False' : 'True')
 
+  Logger.log('updateTask result : ' + JSON.stringify('success'))
   return true
-
 }
 
 export function addTask (task) {
@@ -38,6 +39,7 @@ export function addTask (task) {
   sheet.getRange(newRow, 2).setValue(task)
   sheet.getRange(newRow, 3).setValue('False')  // 預設未完成
 
+  Logger.log('addTask result : ' + JSON.stringify('success'))
   return true
 }
 
@@ -48,5 +50,6 @@ export function deleteTask (taskId) {
   // 刪除任務列
   sheet.deleteRow(taskRow)
 
+  Logger.log('deleteTask result : ' + JSON.stringify('success'))
   return true
 }
