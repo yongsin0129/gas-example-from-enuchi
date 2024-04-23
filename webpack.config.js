@@ -1,57 +1,51 @@
 /*********************************
  *    import webpack plugins
  ********************************/
-const path = require('path');
-const fs = require('fs');
-const webpack = require('webpack');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const GasPlugin = require('gas-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackInlineSourcePlugin = require('@effortlessmotion/html-webpack-inline-source-plugin');
-const DynamicCdnWebpackPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin');
-const moduleToCdn = require('module-to-cdn');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const path = require('path')
+const fs = require('fs')
+const webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const GasPlugin = require('gas-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackInlineSourcePlugin = require('@effortlessmotion/html-webpack-inline-source-plugin')
+const DynamicCdnWebpackPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin')
+const moduleToCdn = require('module-to-cdn')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 /*********************************
  *    set up environment variables
  ********************************/
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv').config()
 
-const parsed = dotenv.error ? {} : dotenv.parsed;
-const envVars = parsed || {};
-const PORT = envVars.PORT || 3000;
-envVars.NODE_ENV = process.env.NODE_ENV;
-envVars.PORT = PORT;
+const parsed = dotenv.error ? {} : dotenv.parsed
+const envVars = parsed || {}
+const PORT = envVars.PORT || 3000
+envVars.NODE_ENV = process.env.NODE_ENV
+envVars.PORT = PORT
 
-const isProd = process.env.NODE_ENV === 'production';
-const isWebpackServe = process.env.WEBPACK_SERVE === 'true';
+const isProd = process.env.NODE_ENV === 'production'
+const isWebpackServe = process.env.WEBPACK_SERVE === 'true'
 
-const publicPath = process.env.ASSET_PATH || '/';
+const publicPath = process.env.ASSET_PATH || '/'
 
 /*********************************
  *    define entrypoints
  ********************************/
 // our destination directory
-const destination = path.resolve(__dirname, 'dist');
+const destination = path.resolve(__dirname, 'dist')
 
 // define server paths
-const serverEntry = './src/server/index.ts';
+const serverEntry = './src/server/index.ts'
 
 // define appsscript.json file path
-const copyAppscriptEntry = './appsscript.json';
+const copyAppscriptEntry = './appsscript.json'
 
 // define live development dialog paths
-const devDialogEntry = './dev/index.js';
+const devDialogEntry = './dev/index.js'
 
 // define client entry points and output names
 const clientEntrypoints = [
-  {
-    name: 'CLIENT - Dialog Demo',
-    entry: './src/client/dialog-demo/index.js',
-    filename: 'dialog-demo', // we'll add the .html suffix to these
-    template: './src/client/dialog-demo/index.html',
-  },
   {
     name: 'CLIENT - Dialog Demo Bootstrap',
     entry: './src/client/dialog-demo-bootstrap/index.js',
@@ -59,30 +53,18 @@ const clientEntrypoints = [
     template: './src/client/dialog-demo-bootstrap/index.html',
   },
   {
-    name: 'CLIENT - Dialog Demo MUI',
-    entry: './src/client/dialog-demo-mui/index.js',
-    filename: 'dialog-demo-mui',
-    template: './src/client/dialog-demo-mui/index.html',
-  },
-  {
-    name: 'CLIENT - Dialog Demo Tailwind CSS',
-    entry: './src/client/dialog-demo-tailwindcss/index.js',
-    filename: 'dialog-demo-tailwindcss',
-    template: './src/client/dialog-demo-tailwindcss/index.html',
-  },
-  {
     name: 'CLIENT - Sidebar About Page',
     entry: './src/client/sidebar-about-page/index.js',
     filename: 'sidebar-about-page',
     template: './src/client/sidebar-about-page/index.html',
   },
-];
+]
 
 // define certificate locations
 // see "npm run setup:https" script in package.json
-const keyPath = path.resolve(__dirname, './certs/key.pem');
-const certPath = path.resolve(__dirname, './certs/cert.pem');
-const pfxPath = path.resolve(__dirname, './certs/cert.pfx'); // if needed for Windows
+const keyPath = path.resolve(__dirname, './certs/key.pem')
+const certPath = path.resolve(__dirname, './certs/cert.pem')
+const pfxPath = path.resolve(__dirname, './certs/cert.pfx') // if needed for Windows
 
 /*********************************
  *    Declare settings
@@ -107,12 +89,12 @@ const copyFilesConfig = {
       ],
     }),
   ],
-};
+}
 
 // webpack settings used by both client and server
 const sharedClientAndServerConfig = {
   context: __dirname,
-};
+}
 
 // webpack settings used by all client entrypoints
 const clientConfig = ({ isDevClientWrapper }) => ({
@@ -147,8 +129,8 @@ const clientConfig = ({ isDevClientWrapper }) => ({
             options: {
               plugins: [
                 !isProd &&
-                  !isDevClientWrapper &&
-                  require.resolve('react-refresh/babel'),
+                !isDevClientWrapper &&
+                require.resolve('react-refresh/babel'),
               ].filter(Boolean),
             },
           },
@@ -166,8 +148,8 @@ const clientConfig = ({ isDevClientWrapper }) => ({
           options: {
             plugins: [
               !isProd &&
-                !isDevClientWrapper &&
-                require.resolve('react-refresh/babel'),
+              !isDevClientWrapper &&
+              require.resolve('react-refresh/babel'),
             ].filter(Boolean),
           },
         },
@@ -179,7 +161,7 @@ const clientConfig = ({ isDevClientWrapper }) => ({
       },
     ],
   },
-});
+})
 
 // DynamicCdnWebpackPlugin settings
 // these settings help us load 'react', 'react-dom' and the packages defined below from a CDN
@@ -188,13 +170,13 @@ const DynamicCdnWebpackPluginConfig = {
   // set "verbose" to true to print console logs on CDN usage while webpack builds
   verbose: false,
   resolver: (packageName, packageVersion, options) => {
-    const packageSuffix = isProd ? '.min.js' : '.js';
-    const moduleDetails = moduleToCdn(packageName, packageVersion, options);
+    const packageSuffix = isProd ? '.min.js' : '.js'
+    const moduleDetails = moduleToCdn(packageName, packageVersion, options)
 
     // don't externalize react during development due to issue with react-refresh
     // https://github.com/pmmmwh/react-refresh-webpack-plugin/issues/334
     if (!isProd && packageName === 'react') {
-      return null;
+      return null
     }
 
     // define custom CDN configuration for new packages
@@ -207,37 +189,36 @@ const DynamicCdnWebpackPluginConfig = {
           var: 'ReactTransitionGroup',
           version: packageVersion,
           url: `https://unpkg.com/react-transition-group@${packageVersion}/dist/react-transition-group${packageSuffix}`,
-        };
+        }
       case 'react-bootstrap':
         return {
           name: packageName,
           var: 'ReactBootstrap',
           version: packageVersion,
           url: `https://unpkg.com/react-bootstrap@${packageVersion}/dist/react-bootstrap${packageSuffix}`,
-        };
+        }
       case '@mui/material':
         return {
           name: packageName,
           var: 'MaterialUI',
           version: packageVersion,
-          url: `https://unpkg.com/@mui/material@${packageVersion}/umd/material-ui.${
-            isProd ? 'production.min.js' : 'development.js'
-          }`,
-        };
+          url: `https://unpkg.com/@mui/material@${packageVersion}/umd/material-ui.${isProd ? 'production.min.js' : 'development.js'
+            }`,
+        }
       case '@emotion/react':
         return {
           name: packageName,
           var: 'emotionReact',
           version: packageVersion,
           url: `https://unpkg.com/@emotion/react@${packageVersion}/dist/emotion-react.umd.min.js`,
-        };
+        }
       case '@emotion/styled':
         return {
           name: packageName,
           var: 'emotionStyled',
           version: packageVersion,
           url: `https://unpkg.com/@emotion/styled@${packageVersion}/dist/emotion-styled.umd.min.js`,
-        };
+        }
       // externalize gas-client to keep bundle size even smaller
       case 'gas-client':
         return {
@@ -245,7 +226,7 @@ const DynamicCdnWebpackPluginConfig = {
           var: 'GASClient',
           version: packageVersion,
           url: `https://unpkg.com/gas-client@${packageVersion}/dist/index.js`,
-        };
+        }
       // must include peer dependencies for any custom imports
       case '@types/react':
         return {
@@ -253,17 +234,17 @@ const DynamicCdnWebpackPluginConfig = {
           var: '@types/react',
           version: packageVersion,
           url: `https://unpkg.com/@types/react@${packageVersion}/index.d.ts`,
-        };
+        }
       // return defaults/null depending if Dynamic CDN plugin finds package
       default:
-        return moduleDetails;
+        return moduleDetails
     }
   },
-};
+}
 
 // webpack settings used by each client entrypoint defined at top
 const clientConfigs = clientEntrypoints.map((clientEntrypoint) => {
-  const isDevClientWrapper = false;
+  const isDevClientWrapper = false
   return {
     ...clientConfig({ isDevClientWrapper }),
     name: clientEntrypoint.name,
@@ -285,22 +266,22 @@ const clientConfigs = clientEntrypoints.map((clientEntrypoint) => {
       // this plugin allows us to add dynamically load packages from a CDN
       new DynamicCdnWebpackPlugin(DynamicCdnWebpackPluginConfig),
     ].filter(Boolean),
-  };
-});
+  }
+})
 
 // webpack settings for devServer https://webpack.js.org/configuration/dev-server/
 const devServer = {
   hot: true,
   port: PORT,
   server: 'https',
-};
+}
 
 if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
   // use key and cert settings only if they are found
   devServer.server = {
     type: 'https',
     options: { key: fs.readFileSync(keyPath), cert: fs.readFileSync(certPath) },
-  };
+  }
 }
 
 // If mkcert -install cannot be used on Windows machines (in pipeline, for example), the
@@ -310,13 +291,13 @@ if (fs.existsSync(pfxPath)) {
   devServer.server = {
     type: 'https',
     options: { pfx: fs.readFileSync(pfxPath), passphrase: 'abc123' },
-  };
+  }
 }
 
 // webpack settings for the development client wrapper
 const devClientConfigs = clientEntrypoints.map((clientEntrypoint) => {
-  envVars.FILENAME = clientEntrypoint.filename;
-  const isDevClientWrapper = true;
+  envVars.FILENAME = clientEntrypoint.filename
+  const isDevClientWrapper = true
   return {
     ...clientConfig({ isDevClientWrapper }),
     name: `DEVELOPMENT: ${clientEntrypoint.name}`,
@@ -336,8 +317,8 @@ const devClientConfigs = clientEntrypoints.map((clientEntrypoint) => {
       new HtmlWebpackInlineSourcePlugin(),
       new DynamicCdnWebpackPlugin({}),
     ],
-  };
-});
+  }
+})
 
 // webpack settings used by the server-side code
 const serverConfig = {
@@ -411,7 +392,7 @@ const serverConfig = {
       autoGlobalExportsFiles: [serverEntry],
     }),
   ],
-};
+}
 
 module.exports = [
   // 1. Copy appsscript.json to destination,
@@ -425,4 +406,4 @@ module.exports = [
   // 5. Create a development dialog wrapper bundle for each client entrypoint during development.
   //    Don't actually serve it though when running webpack serve.
   ...(isProd || isWebpackServe ? [] : devClientConfigs),
-].filter(Boolean);
+].filter(Boolean)
