@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from 'react-bootstrap/Button'
 
 function TodoItem ({ task, deleteTask, toggleCompleted }) {
   return (
@@ -9,7 +10,9 @@ function TodoItem ({ task, deleteTask, toggleCompleted }) {
         onChange={() => toggleCompleted(task.id, task.completed)}
       />
       <p className={task.completed ? 'completed' : ''}>{task.text}</p>
-      <button onClick={() => deleteTask(task.id)}>X</button>
+      <Button size='sm' variant='danger' onClick={() => deleteTask(task.id)}>
+        X
+      </Button>
     </div>
   )
 }

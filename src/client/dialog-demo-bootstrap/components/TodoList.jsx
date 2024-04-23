@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import TodoItem from './TodoItem'
+import Button from 'react-bootstrap/Button'
+
+import DefaultListGroup from './BootstrapTable'
+
 import {
   getAllTasks,
   addTask,
@@ -61,20 +64,24 @@ function TodoList () {
 
   return (
     <div className='todo-list'>
-      {tasks.map(task => (
-        <TodoItem
-          key={task.id}
-          task={task}
-          deleteTask={deleteTask}
-          toggleCompleted={toggleCompleted}
-        />
-      ))}
+      <DefaultListGroup
+        tasks={tasks}
+        deleteTask={deleteTask}
+        toggleCompleted={toggleCompleted}
+      ></DefaultListGroup>
+
       <input value={text} onChange={e => setText(e.target.value)} />
-      <button onClick={() => addTaskToServer(text)}>Add</button>
-      <br />
-      <button onClick={() => updataCanva()}>updataCanva</button>
-      <br />
-      <button onClick={() => showTasks(text)}>showTasks</button>
+      <Button variant='primary' size='sm' onClick={() => addTaskToServer(text)}>
+        Add
+      </Button>
+
+      <Button variant='info' size='sm' onClick={() => updataCanva()}>
+        updataCanva
+      </Button>
+
+      <Button variant='success' size='sm' onClick={() => showTasks()}>
+        showTasks
+      </Button>
     </div>
   )
 }
