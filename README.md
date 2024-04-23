@@ -29,3 +29,13 @@ forked from https://github.com/enuchi/React-Google-Apps-Script
 | 3   | 打東東 | FALSE     |
 
 sheet name : sheet1
+
+# client side debug 
+
+1. 先打開 webpack config 的 source map 設定
+```
+// webpack.config.js#250Line
+devtool: isProd ? 'none' : 'inline-source-map'
+```
+
+2. 使用 edge or chrome ，打開 source , 使用 search 找到檔案名稱，下斷點
