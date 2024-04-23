@@ -1,24 +1,19 @@
-import {
-  onOpen,
-  openDialog,
-  openDialogBootstrap,
-  openDialogMUI,
-  openDialogTailwindCSS,
-  openAboutSidebar,
-} from './ui';
+import { onOpen, showModal_todoList } from './UI'
+import { addTask, deleteTask, updateTask, getAllTasks } from './tasks'
 
-import { getSheetsData, addSheet, deleteSheet, setActiveSheet } from './sheets';
-
-// Public functions must be exported as named exports
 export {
   onOpen,
-  openDialog,
-  openDialogBootstrap,
-  openDialogMUI,
-  openDialogTailwindCSS,
-  openAboutSidebar,
-  getSheetsData,
-  addSheet,
-  deleteSheet,
-  setActiveSheet,
-};
+  showModal_todoList,
+  addTask,
+  deleteTask,
+  updateTask,
+  getAllTasks
+}
+
+// global.onOpen = onOpen
+// global.showModal_todoList = showModal_todoList
+
+// global.addTask = addTask
+// global.deleteTask = deleteTask
+// global.updateTask = updateTask
+// global.getAllTasks = getAllTasks

@@ -1,20 +1,17 @@
-export const onOpen = () => {
-  const menu = SpreadsheetApp.getUi()
-    .createMenu('My Sample React Project') // edit me!
-    .addItem('Sheet Editor (Bootstrap)', 'openDialogBootstrap')
-    .addItem('About me', 'openAboutSidebar')
-
-  menu.addToUi()
+export function onOpen () {
+  SpreadsheetApp.getUi()
+    .createMenu('Todo List')
+    .addItem('showModal_todoList', 'showModal_todoList')
+    .addToUi()
 }
 
-export const openDialogBootstrap = () => {
+export function showModal_todoList () {
+  const ui = SpreadsheetApp.getUi()
+  // const html = HtmlService.createHtmlOutputFromFile('index').setWidth(900).setHeight(600)
+  // ui.showModalDialog(html,'React_todoList')
+
   const html = HtmlService.createHtmlOutputFromFile('dialog-demo-bootstrap')
     .setWidth(600)
     .setHeight(600)
-  SpreadsheetApp.getUi().showModalDialog(html, 'Sheet Editor (Bootstrap)')
-}
-
-export const openAboutSidebar = () => {
-  const html = HtmlService.createHtmlOutputFromFile('sidebar-about-page')
-  SpreadsheetApp.getUi().showSidebar(html)
+  SpreadsheetApp.getUi().showModelessDialog(html, 'React_todoList')
 }
