@@ -5,7 +5,7 @@ import TodoItem from './TodoItem'
 
 function DefaultListGroup ({ tasks, deleteTask, toggleCompleted }) {
   return (
-    <ListGroup>
+    <ListGroup key='ListGroup'>
       {tasks.map(task => (
         <ListGroup.Item>
           <TodoItem

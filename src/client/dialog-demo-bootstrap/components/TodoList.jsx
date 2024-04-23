@@ -20,8 +20,14 @@ function TodoList () {
       .catch(err => console.log(err))
   }
 
-  function showTasks () {
+  function showClientSideTasks () {
     console.log(tasks)
+  }
+
+  function showServerSideTasks () {
+    getAllTasks()
+      .then(tasks => console.log(tasks))
+      .catch(err => console.log(err))
   }
 
   useEffect(() => updataCanva(), [])
@@ -65,6 +71,7 @@ function TodoList () {
   return (
     <div className='todo-list'>
       <DefaultListGroup
+        key='DefaultListGroup'
         tasks={tasks}
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}
@@ -79,8 +86,12 @@ function TodoList () {
         updataCanva
       </Button>
 
-      <Button variant='success' size='sm' onClick={() => showTasks()}>
-        showTasks
+      <Button variant='success' size='sm' onClick={() => showClientSideTasks()}>
+        showClientSideTasks
+      </Button>
+
+      <Button variant='success' size='sm' onClick={() => showServerSideTasks()}>
+        showServerSideTasks
       </Button>
     </div>
   )
