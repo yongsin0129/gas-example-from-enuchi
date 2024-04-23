@@ -76,22 +76,46 @@ function TodoList () {
         toggleCompleted={toggleCompleted}
       ></DefaultListGroup>
 
-      <input value={text} onChange={e => setText(e.target.value)} />
-      <Button variant='primary' size='sm' onClick={() => addTaskToServer(text)}>
-        Add
-      </Button>
+      <div>
+        <input value={text} onChange={e => setText(e.target.value)} />
+        <Button
+          variant='primary'
+          size='sm'
+          className='m-1 p-1'
+          onClick={() => addTaskToServer(text)}
+        >
+          Add
+        </Button>
+      </div>
 
-      <Button variant='info' size='sm' onClick={() => updataCanva()}>
-        updataCanva
-      </Button>
+      <div>
+        <Button
+          variant='info'
+          size='sm'
+          className='m-1 p-1'
+          onClick={() => updataCanva()}
+        >
+          updataCanva
+        </Button>
 
-      <Button variant='success' size='sm' onClick={() => showClientSideTasks()}>
-        showClientSideTasks
-      </Button>
+        <Button
+          variant='success'
+          size='sm'
+          className='m-1 p-1'
+          onClick={() => showClientSideTasks()}
+        >
+          showClientSideTasks
+        </Button>
 
-      <Button variant='success' size='sm' onClick={() => showServerSideTasks()}>
-        showServerSideTasks
-      </Button>
+        <Button
+          variant='success'
+          size='sm'
+          className='m-1 p-1'
+          onClick={() => showServerSideTasks()}
+        >
+          showServerSideTasks
+        </Button>
+      </div>
     </div>
   )
 }
