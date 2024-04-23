@@ -20,3 +20,12 @@ forked from https://github.com/enuchi/React-Google-Apps-Script
 # 部署
 
 1. `npm run deploy (用於 production)` (記得把 `<script src="http://localhost:8097"></script>` 去掉)
+
+# todoList sheet data
+| id  | text   | completed |
+| --- | ------ | --------- |
+| 1   | 吃飯   | FALSE     |
+| 2   | 睡覺   | FALSE     |
+| 3   | 打東東 | FALSE     |
+
+sheet name : sheet1
