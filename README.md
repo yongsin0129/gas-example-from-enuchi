@@ -33,9 +33,11 @@ sheet name : sheet1
 # client side debug 
 
 1. 先打開 webpack config 的 source map 設定
+
+[webpack.config.js#L250](https://github.com/yongsin0129/gas-example-from-enuchi/blob/master/webpack.config.js#L250)
 ```
 // webpack.config.js#250Line
 devtool: isProd ? 'none' : 'inline-source-map'
 ```
 
-2. 使用 edge or chrome ，打開 source , 使用 search 找到檔案名稱，下斷點
+1. 使用 edge or chrome ，打開 source , 使用 search 找到檔案名稱，下斷點
