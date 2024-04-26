@@ -36,7 +36,7 @@ function TodoList () {
     addTask(text)
       .then(() => {
         const newTask = {
-          id: tasks.length + 1,
+          id: tasks.length + 2,
           text: text,
           completed: false
         }
@@ -50,8 +50,8 @@ function TodoList () {
   function deleteTask (id) {
     deleteServerTask(id)
       .then(() => {
-        const result = tasks.filter(task => task.id !== id)
-        setTasks(result)
+        // 因為 delete sheet row 會造成 data 重新排序，ID 會變動，所以要重新抓取一次
+        getAllTasks().then(tasks => setTasks(tasks))
       })
       .catch(err => console.log(err))
   }

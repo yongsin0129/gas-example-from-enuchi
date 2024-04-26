@@ -1,3 +1,5 @@
+import { getColumnIndex } from './util.js'
+
 export function getAllTasks () {
   const tasks = SpreadsheetApp.getActive().getSheetByName('sheet1').getDataRange().getValues()
 
@@ -21,10 +23,11 @@ export function getAllTasks () {
 
 export function updateTask (taskId, completed) {
   const sheet = SpreadsheetApp.getActive().getSheetByName('sheet1')
-  const taskRow = parseInt(taskId) + 1  // Google Sheets 的列數從 1 開始
+  const taskRow = parseInt(taskId)
+  const completedColumnIndex = getColumnIndex('completed')
 
   // 更新任務的完成狀態
-  sheet.getRange(taskRow, 3).setValue(completed ? 'False' : 'True')
+  sheet.getRange(taskRow, completedColumnIndex).setValue(completed ? 'False' : 'True')
 
   Logger.log('updateTask result : ' + JSON.stringify('success'))
   return true
@@ -45,7 +48,7 @@ export function addTask (task) {
 
 export function deleteTask (taskId) {
   const sheet = SpreadsheetApp.getActive().getSheetByName('sheet1')
-  const taskRow = parseInt(taskId) + 1  // Google Sheets 的列數從 1 開始
+  const taskRow = parseInt(taskId)
 
   // 刪除任務列
   sheet.deleteRow(taskRow)

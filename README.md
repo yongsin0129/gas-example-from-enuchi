@@ -30,6 +30,8 @@ forked from https://github.com/enuchi/React-Google-Apps-Script
 
 sheet name : sheet1
 
+id column `=ARRAYFORMULA(IF(ISBLANK(B2:B),,row(A2:A)))`
+
 # client side debug 
 
 1. 打開 webpack config 的 source map 設定
